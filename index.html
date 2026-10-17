@@ -158,8 +158,16 @@ button.chip-solid{cursor:pointer;font-family:var(--font-body)}
 /* ===== 我的视频 ===== */
 .video-grid{display:grid;gap:18px;grid-template-columns:1fr}
 .video-feature{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.video-frame{aspect-ratio:16/9;background:#000}
+.video-frame{position:relative;aspect-ratio:16/9;background:#000}
 .video-frame iframe{width:100%;height:100%;display:block;border:0}
+.video-cover{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(180deg,rgba(11,31,51,.05),rgba(11,31,51,.42)),#0b1f33}
+.play-badge{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.16);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s}
+.video-cover:hover .play-badge{transform:scale(1.08);background:rgba(255,255,255,.26)}
+.play-label{font-size:13px;color:rgba(255,255,255,.88);letter-spacing:.04em}
 .video-meta{padding:18px 20px 20px}
 .video-meta h3{font-size:16px;font-weight:700;color:var(--ink)}
 .video-meta p{font-size:13.5px;color:var(--muted);margin-top:6px}
@@ -317,7 +325,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:28px 0;font-size
       <div class="video-grid rv">
         <div class="video-feature">
           <div class="video-frame">
-            <iframe src="https://player.bilibili.com/player.html?bvid=BV19q1KBnEcu&amp;page=1&amp;high_quality=1&amp;danmaku=0" title="温州轨道交通 S2 线 · 清东路—东山运转" loading="lazy" allowfullscreen></iframe>
+            <iframe src="https://player.bilibili.com/player.html?bvid=BV19q1KBnEcu&amp;page=1&amp;high_quality=1&amp;danmaku=0" data-bvid="BV19q1KBnEcu" aria-label="温州轨道交通 S2 线 · 清东路—东山运转" title="温州轨道交通 S2 线 · 清东路—东山运转" loading="lazy" allowfullscreen></iframe>
           </div>
           <div class="video-meta">
             <h3>温州轨道交通 S2 线 · 清东路—东山运转</h3>
@@ -326,7 +334,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:28px 0;font-size
         </div>
         <div class="video-feature">
           <div class="video-frame">
-            <iframe src="https://player.bilibili.com/player.html?bvid=BV1ffLJ6tEFq&amp;page=1&amp;high_quality=1&amp;danmaku=0" title="上海地铁磁浮线 · 龙阳路—浦东1号2号航站楼" loading="lazy" allowfullscreen></iframe>
+            <button class="video-cover" type="button" data-bvid="BV1ffLJ6tEFq" aria-label="上海地铁磁浮线 · 全程侧方展望 POV">
+              <span class="play-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg></span>
+              <span class="play-label">点击播放</span>
+            </button>
           </div>
           <div class="video-meta">
             <h3>上海地铁磁浮线 · 全程侧方展望 POV</h3>
@@ -460,6 +471,38 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:28px 0;font-size
     if (reduce) { window.scrollTo(0, 0); }
     else { window.scrollTo({top:0, behavior:'smooth'}); }
   });
+
+  // 视频互斥：同一时刻只保留一个播放器实例，播放另一条时旧播放器被移除（无法同时播放）
+  function buildCover(oldFrame){
+    var cov = document.createElement('button');
+    cov.type = 'button';
+    cov.className = 'video-cover';
+    cov.setAttribute('data-bvid', oldFrame.getAttribute('data-bvid') || '');
+    cov.setAttribute('aria-label', oldFrame.getAttribute('aria-label') || '视频');
+    cov.innerHTML = '<span class="play-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg></span><span class="play-label">点击播放</span>';
+    var fr = oldFrame.parentNode;
+    fr.removeChild(oldFrame);
+    fr.appendChild(cov);
+    cov.addEventListener('click', function(){ playVideo(cov); });
+    return cov;
+  }
+  function playVideo(btn){
+    var frame = btn.parentNode;
+    if (frame.querySelector('iframe')) { return; }
+    var others = document.querySelectorAll('.video-frame iframe');
+    for (var q = 0; q < others.length; q++) { buildCover(others[q]); }
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://player.bilibili.com/player.html?bvid=' + btn.getAttribute('data-bvid') + '&page=1&high_quality=1&danmaku=0';
+    ifr.title = btn.getAttribute('aria-label') || '视频';
+    ifr.loading = 'lazy';
+    ifr.allowFullscreen = true;
+    frame.removeChild(btn);
+    frame.appendChild(ifr);
+  }
+  var videoCovers = document.querySelectorAll('.video-cover');
+  for (var vc = 0; vc < videoCovers.length; vc++) {
+    videoCovers[vc].addEventListener('click', function(){ playVideo(this); });
+  }
 })();
 </script>
 </body>
