@@ -435,6 +435,15 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:28px 0;font-size
     for (var k = 0; k < rvItems.length; k++) { rvIO.observe(rvItems[k]); }
   }
 
+  function revealPassed(){
+    var passed = document.querySelectorAll('.rv:not(.in)');
+    for (var m = 0; m < passed.length; m++) {
+      if (passed[m].getBoundingClientRect().top < 0) { passed[m].classList.add('in'); }
+    }
+  }
+  window.addEventListener('scroll', revealPassed, {passive:true});
+  revealPassed();
+
   var toTop = document.getElementById('toTop');
   function onScroll(){
     if (window.scrollY > 560) { toTop.classList.add('show'); }
