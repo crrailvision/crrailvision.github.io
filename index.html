@@ -156,14 +156,16 @@ button.chip-solid{cursor:pointer;font-family:var(--font-body)}
 .card-body p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.65}
 
 /* ===== 我的视频 ===== */
+.video-grid{display:grid;gap:18px;grid-template-columns:1fr}
 .video-feature{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .video-frame{aspect-ratio:16/9;background:#000}
 .video-frame iframe{width:100%;height:100%;display:block;border:0}
-.video-meta{padding:20px 22px 22px}
-.video-meta h3{font-size:17px;font-weight:700;color:var(--ink)}
-.video-meta p{font-size:14px;color:var(--muted);margin-top:6px;max-width:46em}
-.more-videos{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.video-meta{padding:18px 20px 20px}
+.video-meta h3{font-size:16px;font-weight:700;color:var(--ink)}
+.video-meta p{font-size:13.5px;color:var(--muted);margin-top:6px}
+.more-videos{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px}
 .more-label{font-size:13px;color:var(--muted)}
+@media (min-width:820px){.video-grid{grid-template-columns:1fr 1fr}}
 
 /* ===== 我的主页 ===== */
 .links{background:var(--paper)}
@@ -312,20 +314,31 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:28px 0;font-size
         <h2>我的视频</h2>
         <p class="sec-sub">用镜头记录轨道上的风景与旅途中的日常。</p>
       </div>
-      <div class="video-feature rv">
-        <div class="video-frame">
-          <iframe src="https://player.bilibili.com/player.html?bvid=BV19q1KBnEcu&amp;page=1&amp;high_quality=1&amp;danmaku=0" title="温州轨道交通 S2 线 · 清东路—东山运转" loading="lazy" allowfullscreen></iframe>
-        </div>
-        <div class="video-meta">
-          <h3>温州轨道交通 S2 线 · 清东路—东山运转</h3>
-          <p>【S2 织就风光带 瓯城正绘复兴图】</p>
-          <div class="more-videos">
-            <span class="more-label">更多视频</span>
-            <a class="chip-solid" href="https://www.douyin.com/user/MS4wLjABAAAAK2EVRTe0ElUT6h9CYQFxMlN77a0W2jbNU-IYISVukac" target="_blank" rel="noopener">抖音</a>
-            <a class="chip-solid" href="https://space.bilibili.com/3493121409157684" target="_blank" rel="noopener">Bilibili</a>
-            <a class="chip-solid" href="https://www.kuaishou.com/profile/3x3uc3ipif3t3ra" target="_blank" rel="noopener">快手</a>
+      <div class="video-grid rv">
+        <div class="video-feature">
+          <div class="video-frame">
+            <iframe src="https://player.bilibili.com/player.html?bvid=BV19q1KBnEcu&amp;page=1&amp;high_quality=1&amp;danmaku=0" title="温州轨道交通 S2 线 · 清东路—东山运转" loading="lazy" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h3>温州轨道交通 S2 线 · 清东路—东山运转</h3>
+            <p>【S2 织就风光带 瓯城正绘复兴图】</p>
           </div>
         </div>
+        <div class="video-feature">
+          <div class="video-frame">
+            <iframe src="https://player.bilibili.com/player.html?bvid=BV1ffLJ6tEFq&amp;page=1&amp;high_quality=1&amp;danmaku=0" title="上海地铁磁浮线 · 龙阳路—浦东1号2号航站楼" loading="lazy" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h3>上海地铁磁浮线 · 全程侧方展望 POV</h3>
+            <p>【龙阳路 — 浦东 1 号 2 号航站楼】</p>
+          </div>
+        </div>
+      </div>
+      <div class="more-videos rv">
+        <span class="more-label">更多视频</span>
+        <a class="chip-solid" href="https://www.douyin.com/user/MS4wLjABAAAAK2EVRTe0ElUT6h9CYQFxMlN77a0W2jbNU-IYISVukac" target="_blank" rel="noopener">抖音</a>
+        <a class="chip-solid" href="https://space.bilibili.com/3493121409157684" target="_blank" rel="noopener">Bilibili</a>
+        <a class="chip-solid" href="https://www.kuaishou.com/profile/3x3uc3ipif3t3ra" target="_blank" rel="noopener">快手</a>
       </div>
     </div>
   </section>
